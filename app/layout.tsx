@@ -13,6 +13,7 @@ import { generatePersonStructuredData } from "@/components/structured-data"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://srinivas26k.github.io"),
   title: {
     default: "Srinivas Nampalli - AI & Automation Engineer | Professional Services",
     template: "%s | Srinivas Nampalli",

@@ -2,7 +2,6 @@ backend:
   name: github
   repo: Srinivas26k/srinivas_nampalli
   branch: main
-  auth_endpoint: https://api.netlify.com/auth
   commit_messages:
     create: 'Create {{collection}} "{{slug}}"'
     update: 'Update {{collection}} "{{slug}}"'
@@ -19,8 +18,8 @@ media_folder: "public/assets/uploads"
 public_folder: "/assets/uploads"
 
 # Site configuration
-site_url: https://srinivas26k.github.io
-display_url: https://srinivas26k.github.io
+site_url: https://srinivas26k.github.io/srinivas_nampalli
+display_url: https://srinivas26k.github.io/srinivas_nampalli
 
 # Collections
 collections:

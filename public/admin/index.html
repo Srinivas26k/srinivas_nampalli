@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Content Manager</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <!-- Include the script that builds the page and powers Netlify CMS -->
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  
+  <!-- Custom preview templates -->
+  <script>
+    // Register custom preview templates
+    CMS.registerPreviewTemplate('home', HomePreview);
+    CMS.registerPreviewTemplate('services', ServicesPreview);
+    CMS.registerPreviewTemplate('about', AboutPreview);
+    CMS.registerPreviewTemplate('projects', ProjectPreview);
+    CMS.registerPreviewTemplate('blog', BlogPreview);
+    CMS.registerPreviewTemplate('resume', ResumePreview);
+    CMS.registerPreviewTemplate('contact', ContactPreview);
+
+    // Custom preview components
+    function HomePreview(props) {
+      const data = props.entry.getIn(['data']).toJS();
+      return h('div', {className: 'preview-container'}, [
+        h('h1', {}, data.title),
+        h('p', {}, data.tagline),
+        h('p', {}, data.description)
+      ]);
+    }
+
+    function ServicesPreview(props) {
+      const data = props.entry.getIn(['data']).toJS();
+      return h('div', {className: 'preview-container'}, [
+        h('h1', {}, data.title),
+        h('p', {}, data.description),
+        data.services && data.services.map((service, index) => 
+          h('div', {key: index, className: 'service-preview'}, [
+            h('h3', {}, service.name),
+            h('p', {}, service.shortDescription),
+            h('p', {}, `Starting at ${service.pricing.startingPrice} ${service.pricing.currency}`)
+          ])
+        )
+      ]);
+    }
+
+    function AboutPreview(props) {
+      const data = props.entry.getIn(['data']).toJS();
+      return h('div', {className: 'preview-container'}, [
+        h('h1', {}, data.title),
+        h('p', {}, data.description)
+      ]);
+    }
+
+    function ProjectPreview(props) {
+      const data = props.entry.getIn(['data']).toJS();
+      return h('div', {className: 'preview-container'}, [
+        h('h1', {}, data.title),
+        h('p', {}, data.description),
+        data.tech && h('div', {}, data.tech.map((tech, index) => 
+          h('span', {key: index, className: 'tech-tag'}, tech)
+        ))
+      ]);
+    }
+
+    function BlogPreview(props) {
+      const data = props.entry.getIn(['data']).toJS();
+      const body = props.entry.getIn(['data', 'body']);
+      return h('div', {className: 'preview-container'}, [
+        h('h1', {}, data.title),
+        h('p', {}, data.description),
+        h('div', {dangerouslySetInnerHTML: {__html: props.widgetFor('body')}})
+      ]);
+    }
+
+    function ResumePreview(props) {
+      const data = props.entry.getIn(['data']).toJS();
+      return h('div', {className: 'preview-container'}, [
+        h('h1', {}, data.title),
+        h('p', {}, data.description)
+      ]);
+    }
+
+    function ContactPreview(props) {
+      const data = props.entry.getIn(['data']).toJS();
+      return h('div', {className: 'preview-container'}, [
+        h('h1', {}, data.title),
+        h('p', {}, data.description)
+      ]);
+    }
+
+    // Helper function for creating elements
+    const h = CMS.h;
+  </script>
+
+  <!-- Custom styles for preview -->
+  <style>
+    .preview-container {
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    .service-preview {
+      border: 1px solid #e1e5e9;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+      background: #f8f9fa;
+    }
+    
+    .tech-tag {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #1976d2;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin: 2px;
+      font-size: 12px;
+    }
+  </style>
+</body>
+</html>

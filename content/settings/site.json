@@ -1,0 +1,35 @@
+{
+  "title": "Srinivas Nampalli - AI & Automation Engineer",
+  "description": "Building AI Agents that Work Like Humans. 20-year-old AI & Automation Engineer from Hyderabad, India specializing in intelligent automation systems.",
+  "url": "https://srinivas26k.github.io",
+  "author": "Srinivas Nampalli",
+  "email": "srinivasvarma764@gmail.com",
+  "phone": "+91 XXXXX XXXXX",
+  "location": "Hyderabad, India",
+  "social": {
+    "github": "https://github.com/Srinivas26k",
+    "linkedin": "https://www.linkedin.com/in/srinivas-nampalli/",
+    "twitter": "https://twitter.com/srinivaskv",
+    "medium": "https://medium.com/@srinivaskv",
+    "patreon": "https://patreon.com/TechWithSrinivas",
+    "buymeacoffee": "https://buymeacoffee.com/srinivaskv"
+  },
+  "seo": {
+    "keywords": [
+      "AI Engineer",
+      "Automation",
+      "Machine Learning",
+      "Mechanical Engineering",
+      "Python",
+      "React",
+      "Next.js",
+      "Artificial Intelligence",
+      "Software Development",
+      "Freelancer"
+    ],
+    "googleAnalytics": "G-XXXXXXXXXX",
+    "googleSearchConsole": "your-search-console-verification",
+    "favicon": "/assets/favicon.ico",
+    "ogImage": "/assets/og-image.png"
+  }
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://srinivas-nampalli.vercel.app/sitemap.xml

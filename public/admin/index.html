@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Content Manager</title>
+</head>
+<body>
+  <!-- Include the script that builds the page and powers Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <!-- Auth error handling and fallback options -->
+  <div class="auth-error" id="authError" style="display: none; background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; border-radius: 5px; margin: 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">
+    <h3>Authentication Issue Detected</h3>
+    <p>Unable to authenticate with GitHub. This is likely because GitHub OAuth is not configured for production use.</p>
+    <div style="margin-top: 10px;">
+      <strong>Options to access CMS:</strong><br><br>
+      <a href="#" onclick="window.location.reload()" style="display: inline-block; padding: 8px 16px; background: #007cba; color: white; text-decoration: none; border-radius: 4px; margin-right: 10px;">Retry Auth</a>
+      <a href="https://github.com/Srinivas26k/srinivas_nampalli" target="_blank" style="display: inline-block; padding: 8px 16px; background: #666; color: white; text-decoration: none; border-radius: 4px; margin-right: 10px;">Edit on GitHub</a>
+      <button onclick="document.getElementById('authError').style.display='none'" style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Close</button>
+    </div>
+    <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px; font-size: 14px;">
+      <strong>For local development:</strong><br>
+      1. Run <code>npx decap-server</code> in your project directory<br>
+      2. Access CMS at <a href="http://localhost:3000/admin" target="_blank">http://localhost:3000/admin</a>
+    </div>
+  </div>
+  
+  <script>
+    // Authentication error detection for GitHub backend
+    window.addEventListener('load', function() {
+      let authFailed = false;
+      
+      // Check for authentication errors
+      window.addEventListener('error', function(e) {
+        if (e.message && (e.message.includes('auth') || e.message.includes('oauth') || e.message.includes('login'))) {
+          if (!authFailed) {
+            authFailed = true;
+            document.getElementById('authError').style.display = 'block';
+          }
+        }
+      });
+
+      // Check for CMS initialization
+      setTimeout(() => {
+        if (typeof CMS === 'undefined') {
+          console.error('CMS failed to load');
+          if (!authFailed) {
+            document.getElementById('authError').style.display = 'block';
+          }
+        } else {
+          console.log('Decap CMS loaded successfully');
+          
+          // Check for authentication after CMS loads
+          setTimeout(() => {
+            try {
+              // Try to access CMS user
+              if (window.netlifyIdentity) {
+                // This shouldn't exist for GitHub backend
+                console.warn('Netlify Identity detected - should not be present for GitHub backend');
+              }
+            } catch (error) {
+              console.error('Authentication check failed:', error);
+              if (!authFailed) {
+                authFailed = true;
+                document.getElementById('authError').style.display = 'block';
+              }
+            }
+          }, 2000);
+        }
+      }, 5000);
+    });
+  </script>
+  
+  <!-- Custom preview templates -->
+  <script>
+    // Wait for CMS to load before registering previews
+    window.addEventListener('load', function() {
+      setTimeout(() => {
+        if (typeof CMS !== 'undefined') {
+          console.log('Registering preview templates...');
+          
+          // Simple preview template for collections
+          const createPreviewTemplate = (name) => (props) => {
+            try {
+              const data = props.entry.getIn(['data']).toJS();
+              return React.createElement('div', {
+                style: { 
+                  padding: '20px', 
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  maxWidth: '800px',
+                  margin: '0 auto'
+                }
+              }, [
+                React.createElement('h1', { 
+                  key: 'title',
+                  style: { color: '#2d3748', borderBottom: '2px solid #e2e8f0', paddingBottom: '10px' }
+                }, data.title || `${name} Preview`),
+                React.createElement('p', { 
+                  key: 'description',
+                  style: { color: '#4a5568', fontSize: '16px', lineHeight: '1.6', marginTop: '20px' }
+                }, data.description || 'No description available'),
+                React.createElement('div', { 
+                  key: 'content',
+                  style: { 
+                    marginTop: '30px', 
+                    padding: '15px',
+                    backgroundColor: '#f7fafc',
+                    borderLeft: '4px solid #4299e1',
+                    color: '#2d3748',
+                    fontSize: '14px'
+                  } 
+                }, `This is a preview for the ${name} content. The actual page will render with your custom styling.`)
+              ]);
+            } catch (error) {
+              console.error(`Error in ${name} preview:`, error);
+              return React.createElement('div', {
+                style: { padding: '20px', color: 'red' }
+              }, `Preview error: ${error.message}`);
+            }
+          };
+
+          // Register simplified preview templates
+          try {
+            CMS.registerPreviewTemplate('home', createPreviewTemplate('Home Page'));
+            CMS.registerPreviewTemplate('services', createPreviewTemplate('Services'));
+            CMS.registerPreviewTemplate('about', createPreviewTemplate('About'));
+            CMS.registerPreviewTemplate('projects', createPreviewTemplate('Project'));
+            CMS.registerPreviewTemplate('blog', createPreviewTemplate('Blog Post'));
+            CMS.registerPreviewTemplate('resume', createPreviewTemplate('Resume'));
+            CMS.registerPreviewTemplate('contact', createPreviewTemplate('Contact'));
+            CMS.registerPreviewTemplate('sponsors', createPreviewTemplate('Sponsors'));
+            console.log('Preview templates registered successfully');
+          } catch (error) {
+            console.error('Error registering preview templates:', error);
+          }
+        }
+      }, 1000);
+    });
+  </script>
+
+  <!-- Custom styles for the CMS -->
+  <style>
+    /* Hide any remaining error dialogs after our custom one */
+    .nc-app-error {
+      display: none !important;
+    }
+    
+    /* Custom styling for preview */
+    .preview-container {
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    .service-preview {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+      background: #f8f9fa;
+    }
+    
+    .tech-tag {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #1976d2;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin: 2px;
+      font-size: 12px;
+    }
+    
+    code {
+      background: #f1f5f9;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 13px;
+    }
+  </style>
+</body>
+</html>

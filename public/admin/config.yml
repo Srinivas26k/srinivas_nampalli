@@ -2,6 +2,7 @@ backend:
   name: github
   repo: Srinivas26k/srinivas_nampalli
   branch: main
+  auth_endpoint: https://api.netlify.com/auth
   commit_messages:
     create: 'Create {{collection}} "{{slug}}"'
     update: 'Update {{collection}} "{{slug}}"'
